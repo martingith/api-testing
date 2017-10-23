@@ -2,6 +2,7 @@ import configparser
 import json
 import requests
 import os
+import time
 
 
 def read_config():
@@ -20,6 +21,10 @@ defaultParams = {
     'restrict_internal_cache': 'true',
     'api_token': PIPEDRIVE_API_TOKEN
 }
+
+
+def get_time_in_milliseconds():
+    return str(int(time.time() * 10 ** 6))
 
 
 def do_request(method, endpoint, params={}, data=None, headers={}):

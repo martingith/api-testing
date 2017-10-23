@@ -1,6 +1,6 @@
 from api.pipedrive_utils import add_contact_group
 from api.pipedrive_utils import add_person
-from api.utils import do_request
+from api.utils import do_request, get_time_in_milliseconds
 
 
 def setup():
@@ -12,15 +12,17 @@ def teardown():
 
 
 def test_add_contact_group_with_only_name():
-    r = add_contact_group(group_name="mygroup", group_type="person", description="My test group")
+    r = add_contact_group(group_name="group" + get_time_in_milliseconds(), group_type="person",
+                          description="Test group")
     assert r.json['success']
 
 
 def test_add_person_to_contact_group():
-    person = add_person("My test person")
+    person = add_person("Test person" + get_time_in_milliseconds())
     person_id = person.json['data']['id']
 
-    contact_group = add_contact_group(group_name="mygroup", group_type="person", description="My test group")
+    contact_group = add_contact_group(group_name="group" + get_time_in_milliseconds(), group_type="person",
+                                      description="Test group")
     contact_group_id = contact_group.json['data']['id']
 
     endpoint = 'contactGroups/' + str(contact_group_id) + '/persons'
