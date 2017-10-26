@@ -1,6 +1,6 @@
 # api-testing
 
-#Set up
+# Set up
 1. Install python3 https://www.python.org/downloads/
 2. Create virtual env
     1. OS X: python3 -m venv pytest-env
