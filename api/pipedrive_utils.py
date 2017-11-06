@@ -42,6 +42,16 @@ def add_contact_group(group_name, group_type, description):
     return do_request(method='POST', endpoint=endpoint, data=payload)
 
 
+def remove_contact_group(group_name):
+
+    endpoint = 'contactGroups'
+
+    payload = {
+        "name": group_name,
+
+    }
+    return do_request(method='DELETE', endpoint=endpoint, data=payload)
+
 # Helper method for getting list of all contact groups
 def get_contact_groups():
     endpoint = 'contactGroups'
@@ -56,5 +66,21 @@ def count_contact_groups_by_name(group_name):
     for item in groups_list["data"]:
         if item['name'] == group_name:
             i = i + 1
-
     return i
+
+
+# helper method for renaming contact group
+def rename_contact_group(group_name):
+    
+    endpoint = 'contactGroups'
+
+    payload = {
+        "name": group_name,    
+        "contact_interval": "none",
+        "description": "None",
+        "display_only_owner_contacts": "true",
+        "owner_as_contact_point": "false"
+        
+    }
+    print(payload)
+    return do_request(method='PUT', endpoint=endpoint, data=payload)
