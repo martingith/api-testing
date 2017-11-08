@@ -58,3 +58,57 @@ def count_contact_groups_by_name(group_name):
             i = i + 1
 
     return i
+
+#Helper method for adding organization to contact group
+def add_organization_to_contact_group(organization_id, contact_group_id):
+    endpoint = 'contactGroups/' + str(contact_group_id) + '/organizations'
+    payload = {
+        "item_ids": [organization_id]
+    }
+    r = do_request(method='POST', endpoint=endpoint, data=payload)
+    return r
+
+
+
+# Helper method for removing organization from contact group
+def remove_organization_from_contact_group(organization_id, contact_group_id):
+    endpoint = 'contactGroups/' + str(contact_group_id) + '/organizations/'
+
+    payload = {
+        "item_ids": [organization_id],
+    }
+    r = do_request(method='DELETE', endpoint=endpoint, data=payload)
+    return r
+
+
+# Helper method for renaming contact group; payload includes fixed values for other properties (except name) that the service endpoint might require from the payload
+def rename_contact_group(contact_group_id, name):
+    endpoint = 'contactGroups/' + str(contact_group_id)
+
+    payload = {
+        "name": name,
+        "contact_interval":	"week",
+        "description":	None,
+        "display_only_owner_contacts":	True,
+        "owner_as_contact_point":	False,
+    }
+    r = do_request(method='PUT', endpoint=endpoint, data=payload)
+    return r
+
+
+## Helper method for deleting contact group
+def delete_contact_group(contact_group_id):
+    endpoint = 'contactGroups/' + str(contact_group_id)
+
+    r = do_request(method='DELETE', endpoint=endpoint)
+    return r
+
+#Helper method for finding organizations' ID from Ungrouped group
+def find_organizations_from_ungrouped_group():
+    endpoint = 'contactGroups/1/organizations/'
+
+    r = do_request(method='GET', endpoint=endpoint)
+    list_of_organizations=set()
+    for key, item in r.json["related_objects"]["organization"].items():
+        list_of_organizations.add(item["id"])
+    return list_of_organizations
