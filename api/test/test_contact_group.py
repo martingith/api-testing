@@ -12,7 +12,7 @@ def teardown():
     print("teardown")
 
 
-"""def test_add_contact_group_with_only_name():
+def test_add_contact_group_with_only_name():
     my_group_name = "group" + get_time_in_milliseconds()
     r = add_contact_group(group_name=my_group_name, group_type="person",
                           description="Test group description")
@@ -93,7 +93,7 @@ def test_add_contact_group_with_invalid_values():
     group = add_contact_group("","person","description")
 
     assert group.status_code == 400
-    assert not group.json['success'] """
+    assert not group.json['success']
 
 def test_after_deleting_group_does_organization_move_to_ungrouped():
     group = add_contact_group("group6", "organization", "This is automatically generated for deleting")
@@ -106,19 +106,24 @@ def test_after_deleting_group_does_organization_move_to_ungrouped():
         "item_ids": [organization_id]
     }
     r = do_request(method='POST', endpoint=endpoint, data=payload)
+
+    assert r.status_code == 200
+    assert r.json['success']
+
+
     k = do_request('GET',endpoint='contactGroups/1')
 
     algne = int(k.json['additional_data']['group_summary']['organization']['items_total'])
 
     payload2 = {
-        "id":str(group_id)
+        "item_ids": [group_id]
     }
 
-    o = do_request('DELETE',endpoint='contactGroups/',data=payload2)
+    o = do_request(method='DELETE',endpoint='contactGroups/'+str(group_id),data=payload2)
     assert o.status_code == 200
     assert o.json['success']
 
     k = do_request('GET',endpoint='contactGroups/1')
     pärast = int(k.json['additional_data']['group_summary']['organization']['items_total'])
 
-    assert pärast -1 == algne
+    assert pärast - 1 == algne
