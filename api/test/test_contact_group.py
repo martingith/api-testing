@@ -156,7 +156,6 @@ def test_person_in_deleted_group_sent_to_ungrouped_contacts():
     endpoint = 'contactGroups/1/persons'
     r = do_request(method='GET', endpoint=endpoint)
     groups_list = r.json
-    i = 0
 
     # checks if ungrouped contacts has the person that was created before
     for item in groups_list["data"]:
