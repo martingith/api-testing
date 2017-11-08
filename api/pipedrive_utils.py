@@ -58,3 +58,4 @@ def count_contact_groups_by_name(group_name):
             i = i + 1
 
     return i
+
